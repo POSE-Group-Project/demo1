@@ -240,10 +240,10 @@ class EncryptedPasswordManagerApp:
         self.dashboard_frame = tk.Frame(self.root)
         tk.Label(self.dashboard_frame, text="Dashboard", font=("Arial", 16, "bold")).pack(pady=20)
         
-        # CHANGED THIS LINE:
+        tk.Button(self.dashboard_frame, text="Add New Entry", width=30, command=lambda: self.show_screen("add_entry"), font=("Arial", 12)).pack(pady=10)
+        
         tk.Button(self.dashboard_frame, text="Manage Entries", width=30, command=lambda: self.show_screen("view_entries"), font=("Arial", 12)).pack(pady=10)
         
-        tk.Button(self.dashboard_frame, text="Add New Entry", width=30, command=lambda: self.show_screen("add_entry"), font=("Arial", 12)).pack(pady=10)
         tk.Button(self.dashboard_frame, text="Generate Password", width=30, command=lambda: self.show_screen("generate_password"), font=("Arial", 12)).pack(pady=10)
         
         tk.Button(self.dashboard_frame, text="Change Master Password", width=30, command=lambda: self.show_screen("change_master_password"), font=("Arial", 12)).pack(pady=10)
@@ -365,6 +365,8 @@ class EncryptedPasswordManagerApp:
             self.username_entry.delete(0, tk.END)
             self.password_entry.delete(0, tk.END)
             self.editing_entry_index = -1
+
+            self.show_screen("view_entries")
 
         except Exception as e:
             messagebox.showerror("Encryption/Database Error", f"Failed to save entry: {e}")
