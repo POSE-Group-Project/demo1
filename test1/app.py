@@ -77,7 +77,10 @@ class EncryptedPasswordManagerApp: # Renamed class
         }
         with open(self.master_password_hash_file, 'w') as f:
             json.dump(data, f)
-        self.master_password_data = data # Update in-memory copy
+        self.master_password_data = {
+            'hashed_password': hashed_password_bytes,
+            'salt': salt_bytes
+        } # Update in-memory copy with actual bytes (not the base64 encoded strings)
 
     def _load_vault_entries_from_db(self):
         """Loads encrypted vault entries from the SQLite database into memory."""
@@ -186,7 +189,7 @@ class EncryptedPasswordManagerApp: # Renamed class
 
         if derived_key_for_check == stored_hashed_password:
             self.current_master_key = derived_key_for_check
-            messagebox.showinfo("Success", "Login successful!")
+            
             self._load_vault_entries_from_db() # Load entries after successful login
             self.show_screen("dashboard")
             self.entry_password.delete(0, tk.END)
@@ -208,7 +211,7 @@ class EncryptedPasswordManagerApp: # Renamed class
         self.current_master_key = None
         self.vault_entries = []
         self.editing_entry_index = -1 # Reset editing state on logout
-        messagebox.showinfo("Logout", "Logged out successfully.")
+        
         self.show_screen("login")
 
     # --- Add New Entry / Edit Entry Screen ---
